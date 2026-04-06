@@ -81,6 +81,8 @@
   },
   "auth": {
     "common": {
+      "nameLabel": "Nombre completo",
+      "namePlaceholder": "Jane Doe",
       "emailLabel": "Correo electrónico",
       "emailPlaceholder": "tu@ejemplo.com",
       "passwordLabel": "Contraseña",
@@ -89,7 +91,7 @@
       "redirecting": "Redirigiendo…",
       "continueWithGoogle": "Continuar con Google",
       "backToHome": "Volver al inicio",
-      "googleConnectHint": "Conecta Google OAuth en tu app: esta plantilla solo incluye el botón."
+      "googleConnectHint": "Añade GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET y NEXT_PUBLIC_GOOGLE_AUTH=true para activar este botón."
     },
     "signIn": {
       "title": "Bienvenido de nuevo",
@@ -102,6 +104,7 @@
     "signUp": {
       "title": "Crear una cuenta",
       "description": "Regístrate para empezar.",
+      "passwordHint": "Al menos 8 caracteres.",
       "submit": "Crear cuenta",
       "submitting": "Creando cuenta…",
       "haveAccount": "¿Ya tienes cuenta?",

@@ -3,7 +3,7 @@
 import { useId, useState } from "react"
 import { useSearchParams } from "next/navigation"
 import { Loader2, UserIcon } from "lucide-react"
-import { useTranslations } from "next-intl"
+import { useLocale, useTranslations } from "next-intl"
 import { toast } from "sonner"
 
 import { Button } from "@/components/ui/button"
@@ -18,11 +18,17 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { signUpSchema } from "@/features/auth/schema/credentials"
+import { authClient } from "@/lib/auth/auth-client"
+import { localizedAppUrl } from "@/lib/auth/localized-url"
 import { Link, useRouter } from "@/lib/i18n/navigation"
+
+const googleEnabled = process.env.NEXT_PUBLIC_GOOGLE_AUTH === "true"
 
 export default function SignUp() {
   const id = useId()
   const router = useRouter()
+  const locale = useLocale()
   const searchParams = useSearchParams()
   const t = useTranslations("auth.signUp")
   const tCommon = useTranslations("auth.common")
@@ -30,32 +36,67 @@ export default function SignUp() {
   const returnTo = searchParams.get("returnTo") ?? undefined
   const satelliteRedirect = searchParams.get("redirect") ?? undefined
 
+  const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  const submitDisabled = loading || !email || !password
+  const submitDisabled = loading || !name || !email || !password
+
+  const afterAuthPath = returnTo ?? "/dashboard"
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError(null)
+    const parsed = signUpSchema.safeParse({ name, email, password })
+    if (!parsed.success) {
+      setError(parsed.error.issues[0]?.message ?? "Invalid input")
+      return
+    }
     setLoading(true)
     try {
-      await new Promise((r) => setTimeout(r, 350))
-      const loginParams = new URLSearchParams()
-      if (returnTo) loginParams.set("returnTo", returnTo)
-      if (satelliteRedirect) loginParams.set("redirect", satelliteRedirect)
-      const qs = loginParams.toString()
-      router.push(qs ? `/login?${qs}` : "/login")
+      const callbackURL = localizedAppUrl(locale, afterAuthPath)
+      const { error: signUpError } = await authClient.signUp.email({
+        name: parsed.data.name,
+        email: parsed.data.email,
+        password: parsed.data.password,
+        callbackURL,
+      })
+      if (signUpError) {
+        setError(signUpError.message ?? "Sign up failed")
+        return
+      }
+      toast.success(tCommon("redirecting"))
+      router.push(afterAuthPath)
     } finally {
       setLoading(false)
     }
   }
 
-  const handleGoogle = () => {
+  const handleGoogle = async () => {
     setError(null)
-    toast.info(tCommon("googleConnectHint"))
+    if (!googleEnabled) {
+      toast.info(tCommon("googleConnectHint"))
+      return
+    }
+    setLoading(true)
+    try {
+      const callbackURL = localizedAppUrl(locale, afterAuthPath)
+      const { data, error: socialError } = await authClient.signIn.social({
+        provider: "google",
+        callbackURL,
+      })
+      if (socialError) {
+        setError(socialError.message ?? "Google sign-up failed")
+        return
+      }
+      if (data?.url && data.redirect) {
+        window.location.assign(data.url)
+      }
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -86,6 +127,20 @@ export default function SignUp() {
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-4">
               <div className="space-y-2">
+                <Label htmlFor={`${id}-name`}>{tCommon("nameLabel")}</Label>
+                <Input
+                  id={`${id}-name`}
+                  name="name"
+                  type="text"
+                  autoComplete="name"
+                  required
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder={tCommon("namePlaceholder")}
+                  disabled={loading}
+                />
+              </div>
+              <div className="space-y-2">
                 <Label htmlFor={`${id}-email`}>{tCommon("emailLabel")}</Label>
                 <Input
                   id={`${id}-email`}
@@ -112,6 +167,7 @@ export default function SignUp() {
                   placeholder={tCommon("passwordPlaceholder")}
                   disabled={loading}
                 />
+                <p className="text-xs text-muted-foreground">{t("passwordHint")}</p>
               </div>
             </div>
 

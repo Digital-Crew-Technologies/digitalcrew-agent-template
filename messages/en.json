@@ -81,6 +81,8 @@
   },
   "auth": {
     "common": {
+      "nameLabel": "Full name",
+      "namePlaceholder": "Jane Doe",
       "emailLabel": "Email",
       "emailPlaceholder": "you@example.com",
       "passwordLabel": "Password",
@@ -89,7 +91,7 @@
       "redirecting": "Redirecting...",
       "continueWithGoogle": "Continue with Google",
       "backToHome": "Back to Home",
-      "googleConnectHint": "Wire up Google OAuth in your app—the template only includes this button UI."
+      "googleConnectHint": "Add GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, and NEXT_PUBLIC_GOOGLE_AUTH=true to enable this button."
     },
     "signIn": {
       "title": "Welcome Back",
@@ -102,6 +104,7 @@
     "signUp": {
       "title": "Create an Account",
       "description": "Sign up to get started.",
+      "passwordHint": "Use at least 8 characters.",
       "submit": "Create Account",
       "submitting": "Creating account...",
       "haveAccount": "Already have an account?",

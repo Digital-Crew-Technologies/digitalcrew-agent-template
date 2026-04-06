@@ -81,6 +81,8 @@
   },
   "auth": {
     "common": {
+      "nameLabel": "姓名",
+      "namePlaceholder": "张三",
       "emailLabel": "邮箱",
       "emailPlaceholder": "you@example.com",
       "passwordLabel": "密码",
@@ -89,7 +91,7 @@
       "redirecting": "正在跳转…",
       "continueWithGoogle": "使用 Google 继续",
       "backToHome": "返回首页",
-      "googleConnectHint": "请在应用中接入 Google OAuth——模板仅提供按钮界面。"
+      "googleConnectHint": "配置 GOOGLE_CLIENT_ID、GOOGLE_CLIENT_SECRET，并设置 NEXT_PUBLIC_GOOGLE_AUTH=true 以启用此按钮。"
     },
     "signIn": {
       "title": "欢迎回来",
@@ -102,6 +104,7 @@
     "signUp": {
       "title": "创建账户",
       "description": "注册以开始使用。",
+      "passwordHint": "密码至少 8 位。",
       "submit": "创建账户",
       "submitting": "正在创建…",
       "haveAccount": "已有账户？",

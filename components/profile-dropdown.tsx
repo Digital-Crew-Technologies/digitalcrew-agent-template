@@ -1,11 +1,11 @@
-"use client";
+"use client"
 
-import { useMemo } from "react";
-import { useLocale, useTranslations } from "next-intl";
-import { LayoutDashboard, LogOut, Settings } from "lucide-react";
+import { useMemo } from "react"
+import { useLocale, useTranslations } from "next-intl"
+import { LayoutDashboard, LogOut, Settings } from "lucide-react"
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,56 +15,53 @@ import {
   DropdownMenuSeparator,
   DropdownMenuShortcut,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
-import { Link } from "@/lib/i18n/navigation";
-import { cn } from "@/lib/utils";
+} from "@/components/ui/dropdown-menu"
+import { SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar"
+import { authClient } from "@/lib/auth/auth-client"
+import { Link, useRouter } from "@/lib/i18n/navigation"
+import { cn } from "@/lib/utils"
 
 type ProfileDropdownProps = {
   /** Use "sidebar" when rendering in the app sidebar footer. */
-  variant?: "default" | "sidebar";
-};
-
-type MockUser = {
-  fullName: string;
-  email: string;
-  avatarUrl?: string;
-};
-
-const mockUser: MockUser = {
-  fullName: "Alex Morgan",
-  email: "alex@digitalcrew.tech",
-  avatarUrl: "/avatars/01.png",
-};
+  variant?: "default" | "sidebar"
+}
 
 function getInitials(input: { fullName: string; email: string }) {
-  const { fullName, email } = input;
+  const { fullName, email } = input
 
   if (fullName) {
-    const parts = fullName.trim().split(/\s+/);
+    const parts = fullName.trim().split(/\s+/)
     if (parts.length >= 2) {
-      return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+      return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
     }
-    return fullName[0]?.toUpperCase() || "U";
+    return fullName[0]?.toUpperCase() || "U"
   }
 
-  if (email) return email[0]?.toUpperCase() || "U";
-  return "U";
+  if (email) return email[0]?.toUpperCase() || "U"
+  return "U"
 }
 
 export function ProfileDropdown({ variant = "default" }: ProfileDropdownProps) {
-  // Ensure the component re-renders when locale changes.
-  useLocale();
+  useLocale()
 
-  const tNav = useTranslations("nav");
+  const tNav = useTranslations("nav")
+  const router = useRouter()
+  const { data: session, isPending } = authClient.useSession()
 
   const vm = useMemo(() => {
-    const displayName = mockUser.fullName || tNav("myAccount");
-    const email = mockUser.email || "";
-    const avatarUrl = mockUser.avatarUrl || "/avatars/01.png";
-    const initials = getInitials({ fullName: mockUser.fullName, email });
-    return { displayName, email, avatarUrl, initials };
-  }, [tNav]);
+    const user = session?.user
+    const fullName = user?.name ?? ""
+    const email = user?.email ?? ""
+    const displayName = fullName || tNav("myAccount")
+    const avatarUrl = user?.image ?? "/avatars/01.png"
+    const initials = getInitials({ fullName, email })
+    return { displayName, email, avatarUrl, initials }
+  }, [session?.user, tNav])
+
+  const handleSignOut = async () => {
+    await authClient.signOut()
+    router.push("/")
+  }
 
   const dropdownContent = (
     <>
@@ -94,17 +91,36 @@ export function ProfileDropdown({ variant = "default" }: ProfileDropdownProps) {
         </DropdownMenuItem>
       </DropdownMenuGroup>
       <DropdownMenuSeparator />
-      <DropdownMenuItem variant="destructive" asChild>
-        <Link href="/">
-          <LogOut className="h-4 w-4" />
-          <span>{tNav("logout")}</span>
-          <DropdownMenuShortcut className="text-current">
-            ⇧⌘Q
-          </DropdownMenuShortcut>
-        </Link>
+      <DropdownMenuItem variant="destructive" onClick={handleSignOut}>
+        <LogOut className="h-4 w-4" />
+        <span>{tNav("logout")}</span>
+        <DropdownMenuShortcut className="text-current">⇧⌘Q</DropdownMenuShortcut>
       </DropdownMenuItem>
     </>
-  );
+  )
+
+  if (isPending) {
+    const skeleton = (
+      <div
+        className={cn(
+          "flex items-center gap-2",
+          variant === "sidebar" && "px-2 py-2",
+        )}
+      >
+        <div className="bg-muted size-8 shrink-0 animate-pulse rounded-full" />
+        {variant === "sidebar" && (
+          <div className="grid flex-1 gap-1 group-data-[collapsible=icon]:hidden">
+            <div className="bg-muted h-3 w-24 animate-pulse rounded" />
+            <div className="bg-muted h-3 w-32 animate-pulse rounded" />
+          </div>
+        )}
+      </div>
+    )
+    if (variant === "sidebar") {
+      return <SidebarMenuItem>{skeleton}</SidebarMenuItem>
+    }
+    return skeleton
+  }
 
   if (variant === "sidebar") {
     return (
@@ -145,7 +161,7 @@ export function ProfileDropdown({ variant = "default" }: ProfileDropdownProps) {
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>
-    );
+    )
   }
 
   return (
@@ -162,6 +178,5 @@ export function ProfileDropdown({ variant = "default" }: ProfileDropdownProps) {
         {dropdownContent}
       </DropdownMenuContent>
     </DropdownMenu>
-  );
+  )
 }
-

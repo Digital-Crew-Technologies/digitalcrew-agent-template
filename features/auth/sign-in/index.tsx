@@ -3,7 +3,7 @@
 import { useId, useState } from "react"
 import { useSearchParams } from "next/navigation"
 import { Loader2, UserIcon } from "lucide-react"
-import { useTranslations } from "next-intl"
+import { useLocale, useTranslations } from "next-intl"
 import { toast } from "sonner"
 
 import { Button } from "@/components/ui/button"
@@ -18,11 +18,17 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { signInSchema } from "@/features/auth/schema/credentials"
+import { authClient } from "@/lib/auth/auth-client"
+import { localizedAppUrl } from "@/lib/auth/localized-url"
 import { Link, useRouter } from "@/lib/i18n/navigation"
+
+const googleEnabled = process.env.NEXT_PUBLIC_GOOGLE_AUTH === "true"
 
 export default function SignIn() {
   const id = useId()
   const router = useRouter()
+  const locale = useLocale()
   const searchParams = useSearchParams()
   const t = useTranslations("auth.signIn")
   const tCommon = useTranslations("auth.common")
@@ -37,21 +43,57 @@ export default function SignIn() {
 
   const submitDisabled = loading || !email || !password
 
+  const afterAuthPath = returnTo ?? "/dashboard"
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError(null)
+    const parsed = signInSchema.safeParse({ email, password })
+    if (!parsed.success) {
+      setError(parsed.error.issues[0]?.message ?? "Invalid input")
+      return
+    }
     setLoading(true)
     try {
-      await new Promise((r) => setTimeout(r, 350))
-      router.push(returnTo ?? "/dashboard")
+      const callbackURL = localizedAppUrl(locale, afterAuthPath)
+      const { error: signError } = await authClient.signIn.email({
+        email: parsed.data.email,
+        password: parsed.data.password,
+        callbackURL,
+      })
+      if (signError) {
+        setError(signError.message ?? "Sign in failed")
+        return
+      }
+      router.push(afterAuthPath)
     } finally {
       setLoading(false)
     }
   }
 
-  const handleGoogle = () => {
+  const handleGoogle = async () => {
     setError(null)
-    toast.info(tCommon("googleConnectHint"))
+    if (!googleEnabled) {
+      toast.info(tCommon("googleConnectHint"))
+      return
+    }
+    setLoading(true)
+    try {
+      const callbackURL = localizedAppUrl(locale, afterAuthPath)
+      const { data, error: socialError } = await authClient.signIn.social({
+        provider: "google",
+        callbackURL,
+      })
+      if (socialError) {
+        setError(socialError.message ?? "Google sign-in failed")
+        return
+      }
+      if (data?.url && data.redirect) {
+        window.location.assign(data.url)
+      }
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (

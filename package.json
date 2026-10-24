@@ -13,7 +13,7 @@
     "auth:migrate": "digitalcrew-auth migrate"
   },
   "dependencies": {
-    "@digitalcrew/auth": "file:../digitalcrew-auth",
+    "@digitalcrew/auth": "git+https://github.com/Digital-Crew-Technologies/digitalcrew-auth.git#3fab87d227adb86e9d74ba02d9b62b4c9f796c30",
     "better-auth": "^1.5.6",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

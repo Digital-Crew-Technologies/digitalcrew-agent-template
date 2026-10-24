@@ -2,16 +2,16 @@
 
 ## The repository
 - Next.js application template for Digital Crew agents: localized routing, dashboard shell, login / sign-up pages wired to `@digitalcrew/auth` (better-auth).
-- Stack: Next.js 16.1.7 (App Router, `--webpack` in dev and build), React 19, strict TypeScript, Tailwind CSS 4, shadcn/ui, next-intl, next-themes, zod.
+- Stack: Next.js 16 (App Router, `--webpack` in dev and build), React 19, strict TypeScript, Tailwind CSS 4, shadcn/ui, next-intl, next-themes, zod.
 - Package manager: npm (`package-lock.json`, the only lockfile in the repository).
 - Node version: not pinned in the repository (no `.nvmrc` or `engines`); CI uses Node 24.
-- `@digitalcrew/auth` is a local dependency `file:../digitalcrew-auth`: the digitalcrew-auth repository must be cloned next to this one, and its exports point to `dist/` (built by its `build` script, `tsc`). Without that `dist/`, `npm run typecheck` fails (TS2307 on `@digitalcrew/auth` in `app/api/auth/[...all]/route.ts` and `lib/auth/session.ts`).
+- `@digitalcrew/auth` is a git dependency pinned to a commit SHA of the digitalcrew-auth repository (see `package.json`). `npm ci` installs it with its own `dist/`, so no sibling clone is needed.
 
 ## Commands (package.json)
 - Install: `npm install` (README); `npm ci` to leave the lockfile untouched.
 - Dev: `npm run dev` (http://localhost:3000, redirects to `/en`)
 - Lint: `npm run lint`
-- Typecheck: `npm run typecheck` (`tsc --noEmit`); needs `../digitalcrew-auth/dist` (see above).
+- Typecheck: `npm run typecheck` (`tsc --noEmit`)
 - Format: `npm run format` (Prettier writes `**/*.{ts,tsx}`)
 - Build: `npm run build`; start: `npm run start`
 - Tests: no test script and no test file in the repository.

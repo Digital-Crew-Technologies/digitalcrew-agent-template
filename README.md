@@ -7,7 +7,7 @@ A Next.js application starter with localized routing, a dashboard shell, and sha
 - **Next.js** 16 (App Router) with **React** 19
 - **TypeScript**, **ESLint**, **Prettier** (with Tailwind class sorting)
 - **Tailwind CSS** 4
-- **next-intl** — URL-based locales (`/en`, `/es`, `/zh`)
+- **next-intl** — URL-based locales (`/en`, `/fr`, …)
 - **next-themes** — light / dark / system
 - **shadcn/ui** — components under `components/ui` (Lucide icons)
 
@@ -44,7 +44,7 @@ Open [http://localhost:3000](http://localhost:3000); you will be redirected to a
 
 ## Internationalization
 
-Locales are defined in `lib/i18n/routing.ts` (currently **en**, **es**, **zh** with `localePrefix: "always"`). Copy strings live in `messages/<locale>.json`. Middleware in `middleware.ts` wires `next-intl` to those routes.
+Locales are defined in `lib/i18n/routing.ts` (currently **en**, **fr**, **es**, **zh** with `localePrefix: "always"`). Copy strings live in `messages/<locale>.json`. Middleware in `middleware.ts` wires `next-intl` to those routes.
 
 ## Project layout (high level)
 

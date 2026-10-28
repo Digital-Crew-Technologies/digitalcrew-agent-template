@@ -1,0 +1,120 @@
+{
+  "home": {
+    "title": "Digital Crew",
+    "subtitle": "Modèle Next.js avec auth Supabase, i18n, shadcn/ui et coque dashboard—prêt à être déployé.",
+    "buttonHint": "Ouvrez le tableau de bord pour explorer la mise en page authentifiée.",
+    "button": "Ouvrir le tableau de bord",
+    "signIn": "Connexion",
+    "signUp": "S’inscrire",
+    "darkModeHint": "Astuce : appuyez sur <kbd>d</kbd> pour le mode sombre."
+  },
+  "locale": {
+    "label": "Langue"
+  },
+  "themeSwitcher": {
+    "toggle": "Basculer le thème"
+  },
+  "nav": {
+    "brandName": "Digital Crew",
+    "groupMain": "PRINCIPAL",
+    "groupSystem": "SYSTÈME",
+    "dashboard": "Tableau de bord",
+    "settings": "Paramètres",
+    "appearance": "Apparence",
+    "helpSupport": "Aide et support",
+    "myAccount": "Mon compte",
+    "logout": "Se déconnecter",
+    "searchPlaceholder": "Rechercher…"
+  },
+  "settings": {
+    "title": "Paramètres",
+    "nav": {
+      "appearance": "Apparence",
+      "selectPlaceholder": "Section"
+    },
+    "appearance": {
+      "title": "Apparence",
+      "description": "Personnalisez l’apparence de l’application. Basculez automatiquement entre les thèmes clair et sombre.",
+      "theme": {
+        "section": "Thème",
+        "system": "Système",
+        "light": "Clair",
+        "dark": "Sombre",
+        "ariaGroup": "Choisir la préférence de thème",
+        "srDescription": "Choisissez la préférence système, le mode clair ou le mode sombre",
+        "optionPreview": "Aperçu de l’option {label}",
+        "optionSelect": "Sélectionner {label}"
+      },
+      "splashCursor": {
+        "section": "Curseur splash",
+        "enabled": "Activé",
+        "disabled": "Désactivé",
+        "ariaGroup": "Choisir la préférence du curseur splash",
+        "srDescription": "Activez ou désactivez l’animation du curseur splash",
+        "optionPreview": "Aperçu de l’option {label}",
+        "optionSelect": "Sélectionner {label}"
+      }
+    }
+  },
+  "commandMenu": {
+    "placeholder": "Saisissez une commande ou recherchez…",
+    "empty": "Aucun résultat",
+    "themeGroup": "Thème"
+  },
+  "support": {
+    "title": "Aide et support",
+    "intro": "Digital Crew est votre plateforme IA pour automatiser les ventes, gérer les prospects et piloter des campagnes multicanal. Pour l’onboarding, la configuration de campagnes ou toute question sur les fonctionnalités, nous sommes là pour vous accompagner.",
+    "channels": {
+      "bookCall": {
+        "title": "Prendre rendez-vous",
+        "description": "Planifiez un échange avec notre fondateur pour discuter de vos besoins et découvrir comment Digital Crew peut aider votre entreprise.",
+        "helper": "Consultation personnalisée",
+        "cta": "Planifier l’entretien"
+      },
+      "email": {
+        "title": "Envoyer un e-mail",
+        "description": "Écrivez-nous pour le support, vos questions ou vos retours. Nous vous répondrons rapidement.",
+        "helper": "Réponse sous un jour ouvré",
+        "cta": "mario@digitalcrew.tech"
+      }
+    }
+  },
+  "auth": {
+    "common": {
+      "nameLabel": "Nom complet",
+      "namePlaceholder": "Jane Doe",
+      "emailLabel": "E-mail",
+      "emailPlaceholder": "vous@exemple.com",
+      "passwordLabel": "Mot de passe",
+      "passwordPlaceholder": "••••••••",
+      "or": "Ou",
+      "redirecting": "Redirection…",
+      "continueWithGoogle": "Continuer avec Google",
+      "backToHome": "Retour à l’accueil",
+      "googleConnectHint": "Ajoutez GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET et NEXT_PUBLIC_GOOGLE_AUTH=true pour activer ce bouton."
+    },
+    "signIn": {
+      "title": "Bon retour",
+      "description": "Saisissez vos identifiants pour vous connecter.",
+      "submit": "Se connecter",
+      "submitting": "Connexion…",
+      "noAccount": "Pas encore de compte ?",
+      "signUpLink": "S’inscrire"
+    },
+    "signUp": {
+      "title": "Créer un compte",
+      "description": "Inscrivez-vous pour commencer.",
+      "passwordHint": "Au moins 8 caractères.",
+      "submit": "Créer un compte",
+      "submitting": "Création du compte…",
+      "haveAccount": "Déjà un compte ?",
+      "signInLink": "Se connecter"
+    },
+    "signOut": {
+      "title": "Se déconnecter",
+      "description": "Vous serez déconnecté sur cet appareil.",
+      "cancel": "Annuler",
+      "confirm": "Se déconnecter"
+    }
+  }
+}

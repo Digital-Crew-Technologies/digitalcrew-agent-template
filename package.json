@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@digitalcrew/auth": "git+https://github.com/Digital-Crew-Technologies/digitalcrew-auth.git#3fab87d227adb86e9d74ba02d9b62b4c9f796c30",
-    "better-auth": "^1.6.11",
+    "better-auth": "^1.7.7",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",

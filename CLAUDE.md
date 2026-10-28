@@ -28,7 +28,7 @@
 - Import alias `@/*` points to the root.
 
 ## Rules
-- i18n: 3 locales `en`, `es`, `zh` (`localePrefix: "always"`). Every key added or changed is changed in all 3 `messages/*.json` files (today they have the same keys). French is not a UI locale: `/fr/...` redirects to `/en/...` (`next.config.mjs`).
+- i18n: 4 locales `en`, `fr`, `es`, `zh` (`localePrefix: "always"`). Every key added or changed is changed in all 4 `messages/*.json` files (today they have the same keys).
 - Adding a locale means changing together `lib/i18n/routing.ts` (`locales` and `localeNames`), the `matcher` in `middleware.ts` and a new `messages/<locale>.json`.
 - Environment variables: only dummy values in `.env.example`. The code also reads `NEXT_PUBLIC_APP_URL`, which is missing from `.env.example` (`NEXT_PUBLIC_GOOGLE_AUTH` is there, commented out).
 - No hard-coded production host: URLs come from environment variables (fallback `http://localhost:3000`).
